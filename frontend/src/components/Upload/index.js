@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-// import { Container } from './styles';
+import Dropzone from 'react-dropzone';
+
+import { DropContainer, UploadMessage } from './style';
 
 export default class Upload extends Component {
   render() {
-    return <div />;
+    return (
+      <Dropzone accept="image/*" onDropAccepted={() => {}}>
+        { ({ getRootProps, getInputProps, isDragActive, isDragReject }) => (
+        <DropContainer
+         {...getRootProps()}
+         isDragActive={isDragActive}
+         isDragReject={isDragReject}
+         >
+           <input {...getInputProps()} />
+
+
+          Jogue seus arquivos aqui
+         </DropContainer> 
+        ) }
+      </Dropzone>
+    );
   }
 }
 
