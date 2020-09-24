@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { uniqueId } from 'lodash';
 
 import GlobalStyle from './components/styles/global';
 import { Container, Content } from './styles';
@@ -12,7 +13,10 @@ class App extends Component {
   };
 
 handleUpload = files => {
-  console.log(files)
+  const uploadedFiles = fles.map(file => ({
+    file,
+    id: uniqueId()
+  }))
 };
 
   render() {
