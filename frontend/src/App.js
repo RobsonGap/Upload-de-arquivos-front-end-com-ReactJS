@@ -4,6 +4,8 @@ import filesize from 'filesize';
 import GlobalStyle from './components/styles/global';
 import { Container, Content } from './styles';
 
+import api from './services/api';
+
 import Upload from './components/Upload/index';
 import FileList from './components/FileList';
 
@@ -28,7 +30,33 @@ handleUpload = files => {
   this.setState({
     uploadedFiles:this.state.uploadedFiles.concat(uploadedFiles)
   });
+
+  uploadedFiles.forEach(this.processUpload)
 };
+
+updateFile = (id, data) => {
+  this.setState({ uploadedFile: this.state.uploadedFiles.map(uploadedFile => {
+    return id === uploadedFile.id 
+    ? { ...uploadedFile, ...data } 
+    : uploadedFile;
+  })})
+};
+
+processUpload = (uploadedFile) => {
+  const data = new FormData();
+
+  data.append('file', uploadedFile.file, uploadedFile.name);
+
+  api.post('posts', data, {
+    onUploadProgress: e => {
+      const progress = parseInt(Math.round(e.loaded * 100) / e.total);
+
+      this.updateFile(uploadedFile.id, {
+        progress,
+      })
+    }
+  })
+}
 
   render() {
     const { uploadedFiles } = this.state;
